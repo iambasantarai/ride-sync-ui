@@ -11,21 +11,30 @@ import {
 } from "react-native";
 
 import { COLORS } from "../constants/colors";
+import Carousel from "react-native-snap-carousel";
+import { slides } from "../models/data";
+import Slider from "../components/Slider";
+import { windowWidth } from "../utils/dimension.util";
 
 const profile = require("../assets/whoknows.png");
 
 export default function HomeScreen() {
+  const renderSlider = ({ item, index }) => {
+    return <Slider data={item} />;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ padding: 20 }}>
         <View style={styles.header}>
-          <Text style={styles.welcome}>Welcome, John Doe</Text>
+          <Text style={styles.headerText}>Welcome, John Doe</Text>
           <ImageBackground
             source={profile}
             style={styles.profileImage}
             imageStyle={styles.profileImage}
           />
         </View>
+
         <View style={styles.searchBar}>
           <Feather
             name="search"
@@ -35,6 +44,21 @@ export default function HomeScreen() {
           />
           <TextInput placeholder="Search" style={styles.searchInput} />
         </View>
+
+        <View style={styles.recommendation}>
+          <Text style={styles.headerText}>Recommended for you</Text>
+        </View>
+
+        <Carousel
+          ref={(c) => {
+            this._carousel = c;
+          }}
+          data={slides}
+          renderItem={renderSlider}
+          sliderWidth={windowWidth - 40}
+          itemWidth={300}
+          loop={true}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -53,11 +77,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  welcome: {
+  headerText: {
     fontSize: 16,
     color: COLORS.lightGray,
-    fontWeight: "600",
-    fontFamily: "hn-normal",
+    fontWeight: "800",
+    fontFamily: "hn-semibold",
   },
 
   profileImage: {
@@ -86,5 +110,9 @@ const styles = StyleSheet.create({
     color: COLORS.lightGray,
     marginLeft: 10,
     fontSize: 16,
+  },
+
+  recommendation: {
+    marginVertical: 20,
   },
 });

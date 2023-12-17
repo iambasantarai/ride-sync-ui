@@ -1,40 +1,23 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { COLORS } from "../../constants/colors";
 import PrimaryButton from "../../components/PrimaryButton";
+import InputField from "../../components/InputField";
 
 const RegisterScreen = ({ navigation }) => {
   return (
     <SafeAreaProvider style={styles.container}>
       <Text style={styles.headerText}>Create a new account</Text>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputLabel}>Your Name</Text>
-        <TextInput style={styles.inputText} />
-      </View>
+      <InputField label={"Your name"} />
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputLabel}>E-mail address</Text>
-        <TextInput style={styles.inputText} keyboardType="email-address" />
-      </View>
+      <InputField label={"E-mail address"} keyboardType={"email-address"} />
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputLabel}>Password</Text>
-        <TextInput style={styles.inputText} secureTextEntry />
-      </View>
+      <InputField label={"Password"} inputType="password" />
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputLabel}>Confirm Password</Text>
-        <TextInput style={styles.inputText} secureTextEntry />
-      </View>
+      <InputField label={"Confirm password"} inputType="password" />
 
       <PrimaryButton
         label={"Register"}
@@ -65,27 +48,6 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: COLORS.lightGray,
     fontFamily: "russo-one",
-  },
-
-  inputGroup: {
-    marginBottom: 10,
-  },
-
-  inputLabel: {
-    fontSize: 14,
-    color: COLORS.lightGray,
-  },
-
-  inputText: {
-    height: 45,
-    width: "100%",
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 16,
-    marginVertical: 10,
-    color: COLORS.lightGray,
-    borderColor: COLORS.lightCharcol,
-    backgroundColor: COLORS.charcol,
   },
 
   helper: {

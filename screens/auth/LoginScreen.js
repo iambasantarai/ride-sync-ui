@@ -1,30 +1,19 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { COLORS } from "../../constants/colors";
 import PrimaryButton from "../../components/PrimaryButton";
+import InputField from "../../components/InputField";
 
 const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaProvider style={styles.container}>
       <Text style={styles.headerText}>Welcome back</Text>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputLabel}>E-mail address</Text>
-        <TextInput style={styles.inputText} keyboardType="email-address" />
-      </View>
+      <InputField label={"E-mail address"} keyboardType={"email-address"} />
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputLabel}>Password</Text>
-        <TextInput style={styles.inputText} secureTextEntry />
-      </View>
+      <InputField label={"Password"} inputType="password" />
 
       <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
         <Text style={styles.forgotPassword}>Forgot password? </Text>
@@ -59,27 +48,6 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     color: COLORS.lightGray,
     fontFamily: "russo-one",
-  },
-
-  inputGroup: {
-    marginBottom: 10,
-  },
-
-  inputLabel: {
-    fontSize: 14,
-    color: COLORS.lightGray,
-  },
-
-  inputText: {
-    height: 45,
-    width: "100%",
-    padding: 10,
-    borderWidth: 1,
-    borderRadius: 16,
-    marginVertical: 10,
-    color: COLORS.lightGray,
-    borderColor: COLORS.lightCharcol,
-    backgroundColor: COLORS.charcol,
   },
 
   helper: {

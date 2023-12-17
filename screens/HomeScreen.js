@@ -1,14 +1,8 @@
 import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { ImageBackground } from "react-native";
-import {
-  Text,
-  StyleSheet,
-  View,
-  SafeAreaView,
-  ScrollView,
-  TextInput,
-} from "react-native";
+import { Text, StyleSheet, View, ScrollView, TextInput } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { COLORS } from "../constants/colors";
 import Carousel from "react-native-snap-carousel";
@@ -25,7 +19,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaProvider style={styles.container}>
       <ScrollView style={{ padding: 20 }}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Welcome, John Doe</Text>
@@ -66,13 +60,14 @@ export default function HomeScreen() {
           <Requests />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 24,
     backgroundColor: COLORS.darkGray,
   },
 

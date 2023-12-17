@@ -1,13 +1,8 @@
 import { useCallback } from "react";
-import {
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -58,7 +53,7 @@ const Main = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView onLayout={onLayoutRootView} style={styles.container}>
+    <SafeAreaProvider onLayout={onLayoutRootView} style={styles.container}>
       <Text style={styles.title}>
         Create, join, start and track rides with friends.
       </Text>
@@ -66,7 +61,7 @@ const Main = ({ navigation }) => {
       <Image
         source={onBoardingImage}
         style={{
-          height: "60%",
+          height: "55%",
           width: "80%",
           resizeMode: "contain",
         }}
@@ -82,13 +77,14 @@ const Main = ({ navigation }) => {
       <Text style={styles.helper}>
         Already have an account? <Text style={styles.link}>Login</Text>
       </Text>
-    </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingTop: 24,
     alignItems: "center",
     backgroundColor: COLORS.darkGray,
   },

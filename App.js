@@ -12,6 +12,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./screens/HomeScreen";
+import { COLORS } from "./constants/colors";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -89,12 +90,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#11181E",
+    backgroundColor: COLORS.darkGray,
   },
 
   title: {
     fontSize: 30,
-    color: "#FFFFFF",
+    color: COLORS.lightGray,
     fontFamily: "russo-one",
     textAlign: "left",
     marginTop: 24,
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "#469C67",
+    backgroundColor: COLORS.green,
     padding: 15,
     width: "90%",
     borderRadius: 16,
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: "#FFFFFF",
+    color: COLORS.white,
     fontFamily: "rosso-one",
     fontSize: 24,
     fontWeight: "bold",
@@ -118,13 +119,13 @@ const styles = StyleSheet.create({
 
   helper: {
     margin: 20,
-    color: "#FFFFFF",
+    color: COLORS.lightGray,
     fontFamily: "hn-normal",
     fontSize: 14,
   },
 
   link: {
-    color: "#469C67",
+    color: COLORS.green,
     fontFamily: "hn-normal",
     fontSize: 14,
     fontWeight: "700",

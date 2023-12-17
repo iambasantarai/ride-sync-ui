@@ -10,6 +10,8 @@ import {
   TextInput,
 } from "react-native";
 
+import { COLORS } from "../constants/colors";
+
 const profile = require("../assets/whoknows.png");
 
 export default function HomeScreen() {
@@ -28,7 +30,7 @@ export default function HomeScreen() {
           <Feather
             name="search"
             size={20}
-            color="#DCDCDC"
+            color={COLORS.lightGray}
             style={styles.searchIcon}
           />
           <TextInput placeholder="Search" style={styles.searchInput} />
@@ -41,7 +43,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#11181E",
+    backgroundColor: COLORS.darkGray,
   },
 
   header: {
@@ -53,7 +55,7 @@ const styles = StyleSheet.create({
 
   welcome: {
     fontSize: 16,
-    color: "#FFFFFF",
+    color: COLORS.lightGray,
     fontWeight: "600",
     fontFamily: "hn-normal",
   },
@@ -72,7 +74,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderWidth: 1,
     borderRadius: 16,
-    borderColor: "#DCDCDC",
+    borderColor: COLORS.lightGray,
     backgroundColor: "#1D2328",
   },
 
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
   },
 
   searchInput: {
-    color: "#DCDCDC",
+    color: COLORS.lightGray,
     marginLeft: 10,
     fontSize: 16,
   },

@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { Text, StyleSheet, Image } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";

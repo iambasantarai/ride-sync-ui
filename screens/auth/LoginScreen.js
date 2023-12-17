@@ -5,11 +5,12 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { COLORS } from "../../constants/colors";
 import PrimaryButton from "../../components/PrimaryButton";
 import InputField from "../../components/InputField";
+import Header from "../../components/Header";
 
 const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaProvider style={styles.container}>
-      <Text style={styles.headerText}>Welcome back</Text>
+      <Header title={"Welcome back"} />
 
       <InputField label={"E-mail address"} keyboardType={"email-address"} />
 
@@ -40,14 +41,6 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     paddingHorizontal: 20,
     backgroundColor: COLORS.darkGray,
-  },
-
-  headerText: {
-    marginVertical: 24,
-    fontSize: 32,
-    fontWeight: "800",
-    color: COLORS.lightGray,
-    fontFamily: "russo-one",
   },
 
   helper: {

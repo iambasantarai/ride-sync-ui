@@ -6,8 +6,8 @@ import AppStack from "./navigation/AppStack";
 const App = () => {
   return (
     <NavigationContainer>
-      <AppStack />
-      {/* <AuthStack /> */}
+      {/* <AppStack /> */}
+      <AuthStack />
     </NavigationContainer>
   );
 };

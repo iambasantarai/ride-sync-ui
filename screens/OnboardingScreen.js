@@ -44,14 +44,17 @@ const OnboardingScreen = ({ navigation }) => {
       />
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("Login")}
+        onPress={() => navigation.navigate("Register")}
         style={styles.button}
       >
         <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
 
       <Text style={styles.helper}>
-        Already have an account? <Text style={styles.link}>Login</Text>
+        Already have an account?{" "}
+        <Text style={styles.link} onPress={() => navigation.navigate("Login")}>
+          Login
+        </Text>
       </Text>
     </SafeAreaProvider>
   );
@@ -61,23 +64,23 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 24,
+    paddingHorizontal: 20,
     alignItems: "center",
     backgroundColor: COLORS.darkGray,
   },
 
   title: {
     fontSize: 30,
-    color: COLORS.lightGray,
-    fontFamily: "russo-one",
-    textAlign: "left",
     marginTop: 24,
-    marginHorizontal: 20,
+    textAlign: "left",
+    fontFamily: "russo-one",
+    color: COLORS.lightGray,
   },
 
   button: {
     backgroundColor: COLORS.green,
-    padding: 15,
-    width: "90%",
+    padding: 8,
+    width: "100%",
     borderRadius: 16,
     alignItems: "center",
   },
@@ -85,7 +88,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: COLORS.white,
     fontFamily: "rosso-one",
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
   },
 

@@ -1,7 +1,14 @@
 import { Feather } from "@expo/vector-icons";
 import React from "react";
 import { ImageBackground } from "react-native";
-import { Text, StyleSheet, View, ScrollView, TextInput } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { COLORS } from "../constants/colors";
@@ -13,7 +20,7 @@ import { Requests } from "../components/Requests";
 
 const profile = require("../assets/whoknows.png");
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const renderSlider = ({ item, index }) => {
     return <Slider data={item} />;
   };
@@ -23,11 +30,13 @@ export default function HomeScreen() {
       <ScrollView style={{ padding: 20 }}>
         <View style={styles.header}>
           <Text style={styles.headerText}>Welcome, John Doe</Text>
-          <ImageBackground
-            source={profile}
-            style={styles.profileImage}
-            imageStyle={styles.profileImage}
-          />
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
+            <ImageBackground
+              source={profile}
+              style={styles.profileImage}
+              imageStyle={styles.profileImage}
+            />
+          </TouchableOpacity>
         </View>
 
         <View style={styles.searchBar}>

@@ -5,13 +5,13 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  View,
 } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import HomeScreen from "./screens/HomeScreen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,7 +27,11 @@ const App = () => {
           name="Main"
           options={{ headerShown: false }}
         />
-        <Stack.Screen component={Home} name="Home" />
+        <Stack.Screen
+          component={HomeScreen}
+          name="Home"
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -126,13 +130,5 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 });
-
-const Home = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Home Screen </Text>
-    </View>
-  );
-};
 
 export default App;

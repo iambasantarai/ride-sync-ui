@@ -15,6 +15,7 @@ import Carousel from "react-native-snap-carousel";
 import { slides } from "../models/data";
 import Slider from "../components/Slider";
 import { windowWidth } from "../utils/dimension.util";
+import { Requests } from "../components/Requests";
 
 const profile = require("../assets/whoknows.png");
 
@@ -59,6 +60,11 @@ export default function HomeScreen() {
           itemWidth={300}
           loop={true}
         />
+
+        <View style={styles.requests}>
+          <Text style={styles.headerText}>Requests</Text>
+          <Requests />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -114,5 +120,9 @@ const styles = StyleSheet.create({
 
   recommendation: {
     marginVertical: 20,
+  },
+
+  requests: {
+    marginTop: 30,
   },
 });

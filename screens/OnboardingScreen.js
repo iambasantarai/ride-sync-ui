@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { COLORS } from "../constants/colors";
+import PrimaryButton from "../components/PrimaryButton";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -43,12 +44,10 @@ const OnboardingScreen = ({ navigation }) => {
         }}
       />
 
-      <TouchableOpacity
+      <PrimaryButton
+        label={"Get started"}
         onPress={() => navigation.navigate("Register")}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>Get Started</Text>
-      </TouchableOpacity>
+      />
 
       <Text style={styles.helper}>
         Already have an account?{" "}
@@ -75,21 +74,6 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: "russo-one",
     color: COLORS.lightGray,
-  },
-
-  button: {
-    backgroundColor: COLORS.green,
-    padding: 8,
-    width: "100%",
-    borderRadius: 16,
-    alignItems: "center",
-  },
-
-  buttonText: {
-    color: COLORS.white,
-    fontFamily: "rosso-one",
-    fontSize: 20,
-    fontWeight: "bold",
   },
 
   helper: {

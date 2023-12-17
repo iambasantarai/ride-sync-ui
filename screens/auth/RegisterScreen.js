@@ -9,6 +9,7 @@ import {
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { COLORS } from "../../constants/colors";
+import PrimaryButton from "../../components/PrimaryButton";
 
 const RegisterScreen = ({ navigation }) => {
   return (
@@ -35,12 +36,10 @@ const RegisterScreen = ({ navigation }) => {
         <TextInput style={styles.inputText} secureTextEntry />
       </View>
 
-      <TouchableOpacity
-        onPress={() => alert("Register button.")}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
+      <PrimaryButton
+        label={"Register"}
+        onPress={() => alert("Register button pressed.")}
+      />
 
       <View style={styles.helper}>
         <Text style={styles.helperText}>Already have an account? </Text>
@@ -87,22 +86,6 @@ const styles = StyleSheet.create({
     color: COLORS.lightGray,
     borderColor: COLORS.lightCharcol,
     backgroundColor: COLORS.charcol,
-  },
-
-  button: {
-    padding: 8,
-    width: "100%",
-    borderRadius: 16,
-    marginTop: 10,
-    alignItems: "center",
-    backgroundColor: COLORS.green,
-  },
-
-  buttonText: {
-    color: COLORS.white,
-    fontFamily: "rosso-one",
-    fontSize: 20,
-    fontWeight: "bold",
   },
 
   helper: {

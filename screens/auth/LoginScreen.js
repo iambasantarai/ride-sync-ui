@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -6,15 +6,31 @@ import { COLORS } from "../../constants/colors";
 import PrimaryButton from "../../components/PrimaryButton";
 import InputField from "../../components/InputField";
 import Header from "../../components/Header";
+import { AuthContext } from "../../context/AuthContext";
 
 const LoginScreen = ({ navigation }) => {
+  const { login } = useContext(AuthContext);
+
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+
   return (
     <SafeAreaProvider style={styles.container}>
       <Header title={"Welcome back"} />
 
-      <InputField label={"E-mail address"} keyboardType={"email-address"} />
+      <InputField
+        label={"E-mail address"}
+        keyboardType={"email-address"}
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+      />
 
-      <InputField label={"Password"} inputType="password" />
+      <InputField
+        label={"Password"}
+        inputType="password"
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+      />
 
       <TouchableOpacity onPress={() => navigation.navigate("ForgotPassword")}>
         <Text style={styles.forgotPassword}>Forgot password? </Text>
@@ -22,7 +38,9 @@ const LoginScreen = ({ navigation }) => {
 
       <PrimaryButton
         label={"Login"}
-        onPress={() => alert("Login button pressed.")}
+        onPress={() => {
+          login();
+        }}
       />
 
       <View style={styles.helper}>

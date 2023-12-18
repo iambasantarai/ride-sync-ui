@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import {
   DrawerContentScrollView,
@@ -7,8 +7,11 @@ import {
 
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { COLORS } from "../constants/colors";
+import { AuthContext } from "../context/AuthContext";
 
 const CustomDrawer = (props) => {
+  const { logout } = useContext(AuthContext);
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
@@ -50,7 +53,12 @@ const CustomDrawer = (props) => {
           borderTopColor: COLORS.darkGray,
         }}
       >
-        <TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
+        <TouchableOpacity
+          onPress={() => {
+            logout();
+          }}
+          style={{ paddingVertical: 15 }}
+        >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Ionicons name="exit-outline" size={22} />
             <Text
@@ -59,7 +67,7 @@ const CustomDrawer = (props) => {
                 marginLeft: 5,
               }}
             >
-              Sign Out
+              Logout
             </Text>
           </View>
         </TouchableOpacity>

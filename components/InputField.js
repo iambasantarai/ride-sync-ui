@@ -2,7 +2,13 @@ import React from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { COLORS } from "../constants/colors";
 
-const InputField = ({ label, inputType, keyboardType }) => {
+const InputField = ({
+  label,
+  inputType,
+  keyboardType,
+  value,
+  onChangeText,
+}) => {
   return (
     <View style={styles.inputGroup}>
       <Text style={styles.inputLabel}>{label}</Text>
@@ -11,9 +17,16 @@ const InputField = ({ label, inputType, keyboardType }) => {
           style={styles.inputText}
           secureTextEntry
           keyboardType={keyboardType}
+          value={value}
+          onChangeText={onChangeText}
         />
       ) : (
-        <TextInput style={styles.inputText} keyboardType={keyboardType} />
+        <TextInput
+          style={styles.inputText}
+          keyboardType={keyboardType}
+          value={value}
+          onChangeText={onChangeText}
+        />
       )}
     </View>
   );

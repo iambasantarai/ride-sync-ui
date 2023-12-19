@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -6,23 +6,52 @@ import { COLORS } from "../../constants/colors";
 import PrimaryButton from "../../components/PrimaryButton";
 import InputField from "../../components/InputField";
 import Header from "../../components/Header";
+import { AuthContext } from "../../context/AuthContext";
 
 const RegisterScreen = ({ navigation }) => {
+  const { register } = useContext(AuthContext);
+
+  const [username, setUsername] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState(null);
+
   return (
     <SafeAreaProvider style={styles.container}>
       <Header title={"Create a new account"} />
 
-      <InputField label={"Your name"} />
+      <InputField
+        label={"Your name"}
+        value={username}
+        onChangeText={(text) => setUsername(text)}
+      />
 
-      <InputField label={"E-mail address"} keyboardType={"email-address"} />
+      <InputField
+        label={"E-mail address"}
+        keyboardType={"email-address"}
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+      />
 
-      <InputField label={"Password"} inputType="password" />
+      <InputField
+        label={"Password"}
+        inputType="password"
+        value={password}
+        onChangeText={(text) => setPassword(text)}
+      />
 
-      <InputField label={"Confirm password"} inputType="password" />
+      <InputField
+        label={"Confirm password"}
+        inputType="password"
+        value={confirmPassword}
+        onChangeText={(text) => setConfirmPassword(text)}
+      />
 
       <PrimaryButton
         label={"Register"}
-        onPress={() => alert("Register button pressed.")}
+        onPress={() => {
+          register(username, email, password);
+        }}
       />
 
       <View style={styles.helper}>

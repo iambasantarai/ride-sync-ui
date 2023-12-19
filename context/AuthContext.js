@@ -31,11 +31,13 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     try {
-      apiService.post("/auth/register", {
+      const response = await apiService.post("/auth/register", {
         username,
         email,
         password,
       });
+
+      console.log({ response });
     } catch (error) {
       console.log("ERROR:", error);
     }
@@ -43,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = apiService.post("/auth/login", {
+      const response = await apiService.post("/auth/login", {
         email,
         password,
       });

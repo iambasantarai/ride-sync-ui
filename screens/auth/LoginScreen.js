@@ -39,7 +39,7 @@ const LoginScreen = ({ navigation }) => {
       <PrimaryButton
         label={"Login"}
         onPress={() => {
-          login();
+          login(email, password);
         }}
       />
 

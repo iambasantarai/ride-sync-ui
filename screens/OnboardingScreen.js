@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
     marginTop: 24,
     textAlign: "left",
     fontFamily: "Roboto",
+    fontWeight: "900",
     color: COLORS.lightGray,
   },
 

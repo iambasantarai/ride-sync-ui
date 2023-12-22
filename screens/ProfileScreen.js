@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.darkGray,
   },
   text: {
-    fontFamily: "russo-one",
+    fontFamily: "Roboto",
     color: COLORS.white,
   },
 });

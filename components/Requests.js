@@ -57,14 +57,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.white,
     fontWeight: "800",
-    fontFamily: "rosso-one",
+    fontFamily: "Roboto",
   },
 
   subtitle: {
     fontSize: 12,
     color: COLORS.lightCharcol,
     fontWeight: "600",
-    fontFamily: "hn-normal",
+    fontFamily: "Roboto",
   },
 
   actionButtons: {

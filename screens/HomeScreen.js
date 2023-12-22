@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.lightGray,
     fontWeight: "800",
-    fontFamily: "hn-semibold",
+    fontFamily: "Roboto",
   },
 
   profileImage: {

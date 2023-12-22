@@ -32,7 +32,7 @@ const CustomDrawer = (props) => {
             style={{
               color: COLORS.white,
               fontSize: 20,
-              fontFamily: "russo-one",
+              fontFamily: "Roboto",
             }}
           >
             John Doe

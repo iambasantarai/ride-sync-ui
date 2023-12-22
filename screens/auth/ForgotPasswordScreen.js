@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
     justifyContent: "center",
-    fontFamily: "hn-normal",
+    fontFamily: "Roboto",
   },
 
   helperText: {

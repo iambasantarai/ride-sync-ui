@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "800",
     color: COLORS.lightGray,
-    fontFamily: "russo-one",
+    fontFamily: "Roboto",
   },
 });
 

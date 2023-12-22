@@ -1,36 +1,13 @@
-import { useCallback } from "react";
 import { Text, StyleSheet, Image } from "react-native";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { COLORS } from "../constants/colors";
 import PrimaryButton from "../components/PrimaryButton";
 
-SplashScreen.preventAutoHideAsync();
-
 const onboardingImage = require("../assets/friends.png");
 
 const OnboardingScreen = ({ navigation }) => {
-  const [fontsLoaded, fontError] = useFonts({
-    "hn-light": require("../assets/fonts/HelveticaNeueLight.otf"),
-    "hn-normal": require("../assets/fonts/HelveticaNeueRoman.otf"),
-    "hn-semibold": require("../assets/fonts/HelveticaNeueMedium.otf"),
-    "hn-bold": require("../assets/fonts/HelveticaNeueBold.otf"),
-    "russo-one": require("../assets/fonts/RussoOneRegular.ttf"),
-  });
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded || fontError) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded, fontError]);
-
-  if (!fontsLoaded && !fontError) {
-    return null;
-  }
-
   return (
-    <SafeAreaProvider onLayout={onLayoutRootView} style={styles.container}>
+    <SafeAreaProvider style={styles.container}>
       <Text style={styles.title}>
         Create, join, start and track rides with friends.
       </Text>
@@ -72,20 +49,20 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginTop: 24,
     textAlign: "left",
-    fontFamily: "russo-one",
+    fontFamily: "Roboto",
     color: COLORS.lightGray,
   },
 
   helper: {
     margin: 20,
     color: COLORS.lightGray,
-    fontFamily: "hn-normal",
+    fontFamily: "Roboto",
     fontSize: 14,
   },
 
   link: {
     color: COLORS.green,
-    fontFamily: "hn-normal",
+    fontFamily: "Roboto",
     fontSize: 14,
     fontWeight: "700",
   },

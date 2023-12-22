@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     flexDirection: "row",
     justifyContent: "center",
-    fontFamily: "hn-normal",
+    fontFamily: "Roboto",
   },
 
   helperText: {
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "700",
     color: COLORS.green,
-    fontFamily: "hn-normal",
+    fontFamily: "Roboto",
   },
 });
 

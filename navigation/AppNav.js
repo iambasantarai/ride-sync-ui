@@ -9,7 +9,11 @@ export const AppNav = () => {
 
   return (
     <NavigationContainer>
-      {authState.authenticated == true ? <AppStack /> : <AuthStack />}
+      {authState.token && authState.authenticated == true ? (
+        <AppStack />
+      ) : (
+        <AuthStack />
+      )}
     </NavigationContainer>
   );
 };

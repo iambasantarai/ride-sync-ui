@@ -11,10 +11,13 @@ export const AuthProvider = ({ children }) => {
     token: null,
     authenticated: false,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getToken = async () => {
+      setIsLoading(true);
       const token = await SecureStore.getItemAsync(AUTH_TOKEN);
+      setIsLoading(false);
 
       if (token) {
         apiService.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -31,11 +34,13 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     try {
+      setIsLoading(true);
       const response = await apiService.post("/auth/register", {
         username,
         email,
         password,
       });
+      setIsLoading(false);
 
       return response;
     } catch (error) {
@@ -45,19 +50,20 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      setIsLoading(true);
       const response = await apiService.post("/auth/login", {
         email,
         password,
       });
+      setIsLoading(false);
 
       setAuthState({
         token: response.data.token,
         authenticated: true,
       });
 
-      apiService.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${response.data.token}`;
+      apiService.defaults.headers.common["Authorization"] =
+        `Bearer ${response.data.token}`;
 
       await SecureStore.setItemAsync(AUTH_TOKEN, response.data.token);
     } catch (error) {
@@ -81,6 +87,7 @@ export const AuthProvider = ({ children }) => {
         register,
         login,
         logout,
+        isLoading,
       }}
     >
       {children}

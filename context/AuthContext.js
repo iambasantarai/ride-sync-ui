@@ -42,7 +42,15 @@ export const AuthProvider = ({ children }) => {
       });
       setIsLoading(false);
 
-      return response;
+      setAuthState({
+        token: response.data.token,
+        authenticated: true,
+      });
+
+      apiService.defaults.headers.common["Authorization"] =
+        `Bearer ${response.data.token}`;
+
+      await SecureStore.setItemAsync(AUTH_TOKEN, response.data.token);
     } catch (error) {
       console.log("ERROR:", error);
     }

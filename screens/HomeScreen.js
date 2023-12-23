@@ -46,7 +46,11 @@ export default function HomeScreen({ navigation }) {
             color={COLORS.lightGray}
             style={styles.searchIcon}
           />
-          <TextInput placeholder="Search" style={styles.searchInput} />
+          <TextInput
+            placeholder="Search"
+            style={styles.searchInput}
+            placeholderTextColor={COLORS.lightGray}
+          />
         </View>
 
         <View style={styles.recommendation}>

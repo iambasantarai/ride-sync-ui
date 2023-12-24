@@ -5,10 +5,10 @@ import HomeScreen from "../screens/HomeScreen";
 import RoomsScreen from "../screens/RoomsScreen";
 import FriendsScreen from "../screens/FriendsScreen";
 import ExploreScreen from "../screens/ExploreScreen";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
 
 import { COLORS } from "../constants/colors";
+import ChatsScreen from "../screens/ChatsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +18,10 @@ const TabNavigator = () => {
       screenOptions={{
         tabBarShowLabel: false,
         headerShown: false,
-        tabBarStyle: { backgroundColor: COLORS.charcol },
+        tabBarStyle: {
+          backgroundColor: COLORS.charcol,
+          borderColor: COLORS.charcol,
+        },
         tabBarActiveTintColor: COLORS.pastelYellow,
         tabBarInactiveTintColor: COLORS.lightCharcol,
       }}
@@ -32,6 +35,17 @@ const TabNavigator = () => {
           ),
         }}
       />
+
+      <Tab.Screen
+        name="Rooms"
+        component={RoomsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="users" color={color} size={size} />
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="Explore"
         component={ExploreScreen}
@@ -41,6 +55,7 @@ const TabNavigator = () => {
           ),
         }}
       />
+
       <Tab.Screen
         name="Friends"
         component={FriendsScreen}
@@ -50,12 +65,13 @@ const TabNavigator = () => {
           ),
         }}
       />
+
       <Tab.Screen
-        name="Rooms"
-        component={RoomsScreen}
+        name="Chats"
+        component={ChatsScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <FontAwesome5 name="users" color={color} size={size} />
+            <Ionicons name="chatbubbles" color={color} size={size} />
           ),
         }}
       />

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import {
   DrawerContentScrollView,
@@ -8,9 +8,19 @@ import {
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { COLORS } from "../constants/colors";
 import { AuthContext } from "../context/AuthContext";
+import { apiService } from "../services/apiService";
 
 const CustomDrawer = (props) => {
   const { logout } = useContext(AuthContext);
+
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    const getProfile = async () => {
+      const response = await apiService.get("/users/profile");
+      setUser(response.data.user);
+    };
+    getProfile();
+  }, []);
 
   return (
     <View style={{ flex: 1 }}>
@@ -35,7 +45,7 @@ const CustomDrawer = (props) => {
               fontFamily: "Roboto",
             }}
           >
-            John Doe
+            {user.username}
           </Text>
         </View>
 

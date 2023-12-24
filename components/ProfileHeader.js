@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -9,11 +9,21 @@ import {
 
 import { COLORS } from "../constants/colors";
 const profile = require("../assets/whoknows.png");
+import { apiService } from "../services/apiService";
 
 export const ProfileHeader = ({ navigation }) => {
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    const getProfile = async () => {
+      const response = await apiService.get("/users/profile");
+      setUser(response.data.user);
+    };
+    getProfile();
+  }, []);
+
   return (
     <View style={styles.header}>
-      <Text style={styles.headerText}>John Doe</Text>
+      <Text style={styles.headerText}>{user.username}</Text>
       <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <ImageBackground
           source={profile}

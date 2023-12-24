@@ -2,7 +2,7 @@ import React from "react";
 import { Text, StyleSheet } from "react-native";
 import { COLORS } from "../constants/colors";
 
-const Header = ({ title }) => {
+const HeaderText = ({ title }) => {
   return <Text style={styles.headerText}>{title}</Text>;
 };
 
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Header;
+export default HeaderText;

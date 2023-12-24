@@ -5,12 +5,12 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { COLORS } from "../../constants/colors";
 import PrimaryButton from "../../components/PrimaryButton";
 import InputField from "../../components/InputField";
-import Header from "../../components/Header";
+import HeaderText from "../../components/HeaderText";
 
 const ForgotPasswordScreen = ({ navigation }) => {
   return (
     <SafeAreaProvider style={styles.container}>
-      <Header title={"Forgot password"} />
+      <HeaderText title={"Forgot password"} />
 
       <InputField label={"E-mail address"} keyboardType={"email-address"} />
 

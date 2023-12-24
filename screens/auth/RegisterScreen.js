@@ -5,7 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { COLORS } from "../../constants/colors";
 import PrimaryButton from "../../components/PrimaryButton";
 import InputField from "../../components/InputField";
-import Header from "../../components/Header";
+import HeaderText from "../../components/HeaderText";
 import { AuthContext } from "../../context/AuthContext";
 
 const RegisterScreen = ({ navigation }) => {
@@ -18,7 +18,7 @@ const RegisterScreen = ({ navigation }) => {
 
   return (
     <SafeAreaProvider style={styles.container}>
-      <Header title={"Create a new account"} />
+      <HeaderText title={"Create a new account"} />
 
       <InputField
         label={"Your name"}

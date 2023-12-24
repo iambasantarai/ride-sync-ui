@@ -5,7 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { COLORS } from "../../constants/colors";
 import PrimaryButton from "../../components/PrimaryButton";
 import InputField from "../../components/InputField";
-import Header from "../../components/Header";
+import HeaderText from "../../components/HeaderText";
 import { AuthContext } from "../../context/AuthContext";
 
 const LoginScreen = ({ navigation }) => {
@@ -16,7 +16,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <SafeAreaProvider style={styles.container}>
-      <Header title={"Welcome back"} />
+      <HeaderText title={"Welcome back"} />
 
       <InputField
         label={"E-mail address"}

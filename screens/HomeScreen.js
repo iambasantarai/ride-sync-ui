@@ -1,14 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import React from "react";
-import { ImageBackground } from "react-native";
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  TextInput,
-  TouchableOpacity,
-} from "react-native";
+import { Text, StyleSheet, View, ScrollView, TextInput } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { COLORS } from "../constants/colors";
@@ -17,8 +9,7 @@ import { slides } from "../models/data";
 import Slider from "../components/Slider";
 import { windowWidth } from "../utils/dimension.util";
 import { Requests } from "../components/Requests";
-
-const profile = require("../assets/whoknows.png");
+import { ProfileHeader } from "../components/ProfileHeader";
 
 export default function HomeScreen({ navigation }) {
   const renderSlider = ({ item, index }) => {
@@ -28,16 +19,7 @@ export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaProvider style={styles.container}>
       <ScrollView style={{ padding: 20 }}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Welcome, John Doe</Text>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <ImageBackground
-              source={profile}
-              style={styles.profileImage}
-              imageStyle={styles.profileImage}
-            />
-          </TouchableOpacity>
-        </View>
+        <ProfileHeader navigation={navigation} />
 
         <View style={styles.searchBar}>
           <Feather
@@ -82,26 +64,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 24,
     backgroundColor: COLORS.darkGray,
-  },
-
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-
-  headerText: {
-    fontSize: 16,
-    color: COLORS.lightGray,
-    fontWeight: "800",
-    fontFamily: "Roboto",
-  },
-
-  profileImage: {
-    width: 35,
-    height: 35,
-    borderRadius: 30,
   },
 
   searchBar: {

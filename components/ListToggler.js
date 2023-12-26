@@ -18,7 +18,7 @@ export const ListToggler = ({
   return (
     <View
       style={{
-        marginTop: 8,
+        marginTop: 24,
         height: 44,
         width: "100%",
         backgroundColor: COLORS.charcol,

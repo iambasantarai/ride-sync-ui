@@ -9,11 +9,11 @@ import {
 import { COLORS } from "../constants/colors";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ProfileHeader } from "../components/ProfileHeader";
-import HeaderText from "../components/HeaderText";
 import { Feather, Ionicons } from "@expo/vector-icons";
 
 import { apiService } from "../services/apiService";
 import { ListToggler } from "../components/ListToggler";
+import SearchField from "../components/SearchField";
 
 const FriendsScreen = ({ navigation }) => {
   const [friends, setFriends] = useState([]);
@@ -39,14 +39,14 @@ const FriendsScreen = ({ navigation }) => {
       <ScrollView style={{ padding: 20 }}>
         <ProfileHeader navigation={navigation} />
 
-        <View>
-          <ListToggler
-            selectionMode={1}
-            firstOption={"Friends (10)"}
-            secondOption={"Requests (3)"}
-            onSelectList={onSelectList}
-          />
-        </View>
+        <SearchField />
+
+        <ListToggler
+          selectionMode={1}
+          firstOption={"Friends (10)"}
+          secondOption={"Requests (3)"}
+          onSelectList={onSelectList}
+        />
 
         <View>
           {listTab === 1 && (
@@ -69,6 +69,7 @@ const FriendsScreen = ({ navigation }) => {
               </View>
             </View>
           )}
+
           {listTab === 2 && (
             <View style={styles.requestCard}>
               <View style={styles.header}>

@@ -8,6 +8,7 @@ import { COLORS } from "../constants/colors";
 
 import * as Location from "expo-location";
 import { UserLocationContext } from "../context/UserLocationContext";
+import { Loading } from "../components/Loading";
 
 export const AppNav = () => {
   const { authState, isLoading } = useContext(AuthContext);
@@ -36,11 +37,7 @@ export const AppNav = () => {
   }
 
   if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size={"large"} color={COLORS.lightCharcol} />
-      </View>
-    );
+    return <Loading />;
   }
 
   return (

@@ -15,15 +15,19 @@ export const ProfileHeader = ({ navigation }) => {
   const [user, setUser] = useState({});
   useEffect(() => {
     const getProfile = async () => {
-      const response = await apiService.get("/users/profile");
-      setUser(response.data.user);
+      try {
+        const response = await apiService.get("/users/profile");
+        setUser(response.data.user);
+      } catch (error) {
+        console.log("ERROR: ", error);
+      }
     };
     getProfile();
   }, []);
 
   return (
     <View style={styles.header}>
-      <Text style={styles.headerText}>{user.username}</Text>
+      <Text style={styles.headerText}>{user?.username}</Text>
       <TouchableOpacity onPress={() => navigation.openDrawer()}>
         <ImageBackground
           source={profile}

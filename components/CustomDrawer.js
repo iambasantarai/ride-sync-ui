@@ -16,8 +16,12 @@ const CustomDrawer = (props) => {
   const [user, setUser] = useState({});
   useEffect(() => {
     const getProfile = async () => {
-      const response = await apiService.get("/users/profile");
-      setUser(response.data.user);
+      try {
+        const response = await apiService.get("/users/profile");
+        setUser(response.data.user);
+      } catch (error) {
+        console.log("ERROR: ", error);
+      }
     };
     getProfile();
   }, []);

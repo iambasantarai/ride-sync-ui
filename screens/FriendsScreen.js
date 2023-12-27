@@ -5,7 +5,6 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
 import { COLORS } from "../constants/colors";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -19,6 +18,7 @@ import { Loading } from "../components/Loading";
 
 const FriendsScreen = ({ navigation }) => {
   const [friends, setFriends] = useState([]);
+  const [friendRequests, setFriendRequests] = useState([]);
   const [listTab, setListTab] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -36,6 +36,20 @@ const FriendsScreen = ({ navigation }) => {
     getFriends();
   }, []);
 
+  useEffect(() => {
+    const getFriendRequests = async () => {
+      try {
+        setIsLoading(true);
+        const response = await apiService.get("/friends/requests");
+        setIsLoading(false);
+        setFriendRequests(response.data.requests);
+      } catch (error) {
+        console.log("ERROR: ", error);
+      }
+    };
+    getFriendRequests();
+  }, []);
+
   const onSelectList = (value) => {
     setListTab(value);
   };
@@ -50,14 +64,14 @@ const FriendsScreen = ({ navigation }) => {
         <ListToggler
           selectionMode={1}
           firstOption={`Friends (${friends.length})`}
-          secondOption={"Requests (3)"}
+          secondOption={`Requests (${friendRequests.length})`}
           onSelectList={onSelectList}
         />
 
         <View style={styles.listWrapper}>
-          {listTab === 1 && isLoading ? (
+          {isLoading ? (
             <Loading />
-          ) : (
+          ) : listTab === 1 ? (
             friends.map((friend, index) => (
               <View style={styles.requestCard} key={index}>
                 <View style={styles.header}>
@@ -78,27 +92,27 @@ const FriendsScreen = ({ navigation }) => {
                 </View>
               </View>
             ))
-          )}
+          ) : (
+            friendRequests.map((request, index) => (
+              <View style={styles.requestCard} key={index}>
+                <View style={styles.header}>
+                  <View style={styles.headerContnet}>
+                    <Text style={styles.title}>{request.sender.username}</Text>
+                    <Text style={styles.subtitle}>{request.sender.email}</Text>
+                  </View>
+                </View>
 
-          {listTab === 2 && (
-            <View style={styles.requestCard}>
-              <View style={styles.header}>
-                <View style={styles.headerContnet}>
-                  <Text style={styles.title}>Basanta Rai</Text>
-                  <Text style={styles.subtitle}>basanta@yopmail.com</Text>
+                <View style={styles.actionButtons}>
+                  <TouchableOpacity style={styles.actionButton}>
+                    <Feather name="x" size={20} color={COLORS.lightCharcol} />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.actionButton}>
+                    <Feather name="check" size={20} color={COLORS.green} />
+                  </TouchableOpacity>
                 </View>
               </View>
-
-              <View style={styles.actionButtons}>
-                <TouchableOpacity style={styles.actionButton}>
-                  <Feather name="x" size={20} color={COLORS.lightCharcol} />
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.actionButton}>
-                  <Feather name="check" size={20} color={COLORS.green} />
-                </TouchableOpacity>
-              </View>
-            </View>
+            ))
           )}
         </View>
       </ScrollView>

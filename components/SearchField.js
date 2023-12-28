@@ -2,7 +2,7 @@ import { View, TextInput, StyleSheet } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { COLORS } from "../constants/colors";
 
-const SearchField = () => {
+const SearchField = ({ onChangeText }) => {
   return (
     <View style={styles.searchBar}>
       <Feather
@@ -14,6 +14,7 @@ const SearchField = () => {
       <TextInput
         placeholder="Search"
         style={styles.searchInput}
+        onChangeText={onChangeText}
         placeholderTextColor={COLORS.lightGray}
       />
     </View>

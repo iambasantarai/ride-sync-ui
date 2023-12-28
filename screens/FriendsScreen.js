@@ -19,37 +19,38 @@ import { Loading } from "../components/Loading";
 const FriendsScreen = ({ navigation }) => {
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [listTab, setListTab] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [requestStatus, setRequestStatus] = useState(null);
 
+  const getFriends = async () => {
+    try {
+      setIsLoading(true);
+      const response = await apiService.get("/friends");
+      setIsLoading(false);
+      setFriends(response.data.friends);
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+  const getFriendRequests = async () => {
+    try {
+      setIsLoading(true);
+      const response = await apiService.get("/friends/requests");
+      setIsLoading(false);
+      setFriendRequests(response.data.requests);
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+
   useEffect(() => {
-    const getFriends = async () => {
-      try {
-        setIsLoading(true);
-        const response = await apiService.get("/friends");
-        setIsLoading(false);
-        setFriends(response.data.friends);
-      } catch (error) {
-        console.log("ERROR: ", error);
-      }
-    };
     getFriends();
   }, []);
 
   useEffect(() => {
-    const getFriendRequests = async () => {
-      try {
-        setIsLoading(true);
-        const response = await apiService.get("/friends/requests");
-        setIsLoading(false);
-        setFriendRequests(response.data.requests);
-      } catch (error) {
-        console.log("ERROR: ", error);
-      }
-    };
     getFriendRequests();
   }, []);
 
@@ -57,44 +58,47 @@ const FriendsScreen = ({ navigation }) => {
     setSearchQuery(query);
     try {
       setIsLoading(true);
-      const response = await apiService.get(`/users/search?q=${query}`);
+      const response = await apiService.get(`/users?username=${query}`);
       setIsLoading(false);
       setSearchResults(response.data.users);
     } catch (error) {
-      console.log('ERROR: ', error);
+      console.log("ERROR: ", error);
     }
   };
 
   const handleAddFriend = async (userId) => {
     try {
       const response = await apiService.post(`/friends/send-request/${userId}`);
-      
-      setRequestStatus('success');
+
+      setRequestStatus("success");
       console.log(response.data.message);
     } catch (error) {
-      
-      setRequestStatus('failed');
-      console.log('ERROR: ', error);
+      setRequestStatus("failed");
+      console.log("ERROR: ", error);
     }
   };
 
   const handleAcceptRequest = async (requestId) => {
     try {
-      const response = await apiService.post(`/friends/accept-request/${requestId}`);
-      
-      console.log(response.data.message);
+      const response = await apiService.patch(`/friends/accept/${requestId}`);
+
+      console.log("Message: ", response.data.message);
+
+      getFriends();
     } catch (error) {
-      console.log('ERROR: ', error);
+      console.log("ERROR: ", error);
     }
   };
 
   const handleDeclineRequest = async (requestId) => {
     try {
-      const response = await apiService.post(`/friends/decline-request/${requestId}`);
-      
-      console.log(response.data.message);
+      const response = await apiService.patch(`/friends/decline/${requestId}`);
+
+      console.log("Message: ", response.data.message);
+
+      getFriendRequests();
     } catch (error) {
-      console.log('ERROR: ', error);
+      console.log("ERROR: ", error);
     }
   };
 
@@ -115,13 +119,13 @@ const FriendsScreen = ({ navigation }) => {
           secondOption={`Requests (${friendRequests.length})`}
           onSelectList={onSelectList}
         />
-        {requestStatus === 'success' && (
+        {requestStatus === "success" && (
           <Text style={styles.successMessage}>
             Friend request sent successfully!
           </Text>
         )}
 
-        {requestStatus === 'failed' && (
+        {requestStatus === "failed" && (
           <Text style={styles.errorMessage}>
             Failed to send friend request. Please try again.
           </Text>
@@ -152,46 +156,34 @@ const FriendsScreen = ({ navigation }) => {
               </View>
             ))
           ) : (
-            searchResults.map((result, index) => (
+            friendRequests.map((request, index) => (
               <View style={styles.requestCard} key={index}>
                 <View style={styles.header}>
                   <View style={styles.headerContnet}>
-                    <Text style={styles.title}>{result.username}</Text>
-                    <Text style={styles.subtitle}>{result.email}</Text>
+                    <Text style={styles.title}>{request.sender.username}</Text>
+                    <Text style={styles.subtitle}>{request.sender.email}</Text>
                   </View>
                 </View>
 
-                <TouchableOpacity
-                  style={styles.actionButton}
-                  onPress={() => handleAddFriend(result.id)}
-                >
-                  <Ionicons
-                    name="ios-person-add"
-                    size={24}
-                    color={COLORS.lightCharcol}
-                  />
-                  
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.actionButton}
-                  onPress={() => handleAcceptRequest(result.requestId)}
-                >
-                  <Ionicons
-                    name="ios-checkmark"
-                    size={24}
-                    color={COLORS.green}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.actionButton}
-                  onPress={() => handleDeclineRequest(result.requestId)}
-                >
-                  <Ionicons
-                    name="ios-close"
-                    size={24}
-                    color={COLORS.red}
-                  />
-                </TouchableOpacity>
+                <View style={styles.actionButtons}>
+                  <TouchableOpacity style={styles.actionButton}>
+                    <Feather
+                      name="check"
+                      size={20}
+                      color={COLORS.green}
+                      onPress={() => handleAcceptRequest(request.id)}
+                    />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity style={styles.actionButton}>
+                    <Feather
+                      name="x"
+                      size={20}
+                      color={COLORS.lightCharcol}
+                      onPress={() => handleDeclineRequest(request.id)}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             ))
           )}
@@ -262,14 +254,14 @@ const styles = StyleSheet.create({
   successMessage: {
     color: COLORS.green,
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: 10,
   },
 
   errorMessage: {
     color: COLORS.red,
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: 10,
   },
 });

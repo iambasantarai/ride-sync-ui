@@ -139,8 +139,8 @@ const FriendsScreen = ({ navigation }) => {
               <View style={styles.requestCard} key={index}>
                 <View style={styles.header}>
                   <View style={styles.headerContnet}>
-                    <Text style={styles.title}>{friend.receiver.username}</Text>
-                    <Text style={styles.subtitle}>{friend.receiver.email}</Text>
+                    <Text style={styles.title}>{friend.username}</Text>
+                    <Text style={styles.subtitle}>{friend.email}</Text>
                   </View>
                 </View>
 

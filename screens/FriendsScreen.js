@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
+  ToastAndroid,
 } from "react-native";
 import { COLORS } from "../constants/colors";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -24,6 +25,16 @@ const FriendsScreen = ({ navigation }) => {
   const [listTab, setListTab] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [requestStatus, setRequestStatus] = useState(null);
+
+  const showToastMessage = (message) => {
+    ToastAndroid.showWithGravityAndOffset(
+      `${message}`,
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM,
+      25,
+      100,
+    );
+  };
 
   const getFriends = async () => {
     try {
@@ -82,9 +93,12 @@ const FriendsScreen = ({ navigation }) => {
     try {
       const response = await apiService.patch(`/friends/accept/${requestId}`);
 
-      console.log("Message: ", response.data.message);
-
-      getFriends();
+      if (response.status === 200) {
+        getFriends();
+        showToastMessage(response.data.message);
+      } else {
+        showToastMessage("Failed to accept friend request.");
+      }
     } catch (error) {
       console.log("ERROR: ", error);
     }
@@ -94,9 +108,12 @@ const FriendsScreen = ({ navigation }) => {
     try {
       const response = await apiService.patch(`/friends/decline/${requestId}`);
 
-      console.log("Message: ", response.data.message);
-
-      getFriendRequests();
+      if (response.status === 200) {
+        getFriendRequests();
+        showToastMessage(response.data.message);
+      } else {
+        showToastMessage("Failed to decline friend request.");
+      }
     } catch (error) {
       console.log("ERROR: ", error);
     }

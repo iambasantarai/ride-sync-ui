@@ -19,8 +19,11 @@ import { Loading } from "../components/Loading";
 const FriendsScreen = ({ navigation }) => {
   const [friends, setFriends] = useState([]);
   const [friendRequests, setFriendRequests] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
   const [listTab, setListTab] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [requestStatus, setRequestStatus] = useState(null);
 
   useEffect(() => {
     const getFriends = async () => {
@@ -50,6 +53,51 @@ const FriendsScreen = ({ navigation }) => {
     getFriendRequests();
   }, []);
 
+  const onSearchChange = async (query) => {
+    setSearchQuery(query);
+    try {
+      setIsLoading(true);
+      const response = await apiService.get(`/users/search?q=${query}`);
+      setIsLoading(false);
+      setSearchResults(response.data.users);
+    } catch (error) {
+      console.log('ERROR: ', error);
+    }
+  };
+
+  const handleAddFriend = async (userId) => {
+    try {
+      const response = await apiService.post(`/friends/send-request/${userId}`);
+      
+      setRequestStatus('success');
+      console.log(response.data.message);
+    } catch (error) {
+      
+      setRequestStatus('failed');
+      console.log('ERROR: ', error);
+    }
+  };
+
+  const handleAcceptRequest = async (requestId) => {
+    try {
+      const response = await apiService.post(`/friends/accept-request/${requestId}`);
+      
+      console.log(response.data.message);
+    } catch (error) {
+      console.log('ERROR: ', error);
+    }
+  };
+
+  const handleDeclineRequest = async (requestId) => {
+    try {
+      const response = await apiService.post(`/friends/decline-request/${requestId}`);
+      
+      console.log(response.data.message);
+    } catch (error) {
+      console.log('ERROR: ', error);
+    }
+  };
+
   const onSelectList = (value) => {
     setListTab(value);
   };
@@ -59,7 +107,7 @@ const FriendsScreen = ({ navigation }) => {
       <ScrollView style={{ padding: 20 }}>
         <ProfileHeader navigation={navigation} />
 
-        <SearchField />
+        <SearchField value={searchQuery} onChangeText={onSearchChange} />
 
         <ListToggler
           selectionMode={1}
@@ -67,6 +115,17 @@ const FriendsScreen = ({ navigation }) => {
           secondOption={`Requests (${friendRequests.length})`}
           onSelectList={onSelectList}
         />
+        {requestStatus === 'success' && (
+          <Text style={styles.successMessage}>
+            Friend request sent successfully!
+          </Text>
+        )}
+
+        {requestStatus === 'failed' && (
+          <Text style={styles.errorMessage}>
+            Failed to send friend request. Please try again.
+          </Text>
+        )}
 
         <View style={styles.listWrapper}>
           {isLoading ? (
@@ -93,24 +152,46 @@ const FriendsScreen = ({ navigation }) => {
               </View>
             ))
           ) : (
-            friendRequests.map((request, index) => (
+            searchResults.map((result, index) => (
               <View style={styles.requestCard} key={index}>
                 <View style={styles.header}>
                   <View style={styles.headerContnet}>
-                    <Text style={styles.title}>{request.sender.username}</Text>
-                    <Text style={styles.subtitle}>{request.sender.email}</Text>
+                    <Text style={styles.title}>{result.username}</Text>
+                    <Text style={styles.subtitle}>{result.email}</Text>
                   </View>
                 </View>
 
-                <View style={styles.actionButtons}>
-                  <TouchableOpacity style={styles.actionButton}>
-                    <Feather name="x" size={20} color={COLORS.lightCharcol} />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={styles.actionButton}>
-                    <Feather name="check" size={20} color={COLORS.green} />
-                  </TouchableOpacity>
-                </View>
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={() => handleAddFriend(result.id)}
+                >
+                  <Ionicons
+                    name="ios-person-add"
+                    size={24}
+                    color={COLORS.lightCharcol}
+                  />
+                  
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={() => handleAcceptRequest(result.requestId)}
+                >
+                  <Ionicons
+                    name="ios-checkmark"
+                    size={24}
+                    color={COLORS.green}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.actionButton}
+                  onPress={() => handleDeclineRequest(result.requestId)}
+                >
+                  <Ionicons
+                    name="ios-close"
+                    size={24}
+                    color={COLORS.red}
+                  />
+                </TouchableOpacity>
               </View>
             ))
           )}
@@ -176,6 +257,20 @@ const styles = StyleSheet.create({
 
   actionButton: {
     marginHorizontal: 8,
+  },
+
+  successMessage: {
+    color: COLORS.green,
+    fontSize: 16,
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+
+  errorMessage: {
+    color: COLORS.red,
+    fontSize: 16,
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });
 

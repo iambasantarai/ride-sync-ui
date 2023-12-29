@@ -24,7 +24,6 @@ const FriendsScreen = ({ navigation }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [listTab, setListTab] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [requestStatus, setRequestStatus] = useState(null);
 
   const showToastMessage = (message) => {
     ToastAndroid.showWithGravityAndOffset(
@@ -67,24 +66,35 @@ const FriendsScreen = ({ navigation }) => {
 
   const onSearchChange = async (query) => {
     setSearchQuery(query);
-    try {
-      setIsLoading(true);
-      const response = await apiService.get(`/users?username=${query}`);
-      setIsLoading(false);
-      setSearchResults(response.data.users);
-    } catch (error) {
-      console.log("ERROR: ", error);
+
+    if (query.trim() !== "") {
+      try {
+        setIsLoading(true);
+        const response = await apiService.get(`/users?username=${query}`);
+        setIsLoading(false);
+
+        setSearchResults(response.data.user);
+      } catch (error) {
+        console.log("ERROR: ", error);
+      }
+    } else {
+      setSearchResults([]);
     }
   };
 
   const handleAddFriend = async (userId) => {
     try {
-      const response = await apiService.post(`/friends/send-request/${userId}`);
+      const response = await apiService.post(`/friends/add/${userId}`);
 
-      setRequestStatus("success");
+      if (response.status === 200) {
+        getFriends();
+        showToastMessage(response.data.message);
+      } else {
+        showToastMessage("Failed to send friend request.");
+      }
+
       console.log(response.data.message);
     } catch (error) {
-      setRequestStatus("failed");
       console.log("ERROR: ", error);
     }
   };
@@ -130,23 +140,41 @@ const FriendsScreen = ({ navigation }) => {
 
         <SearchField value={searchQuery} onChangeText={onSearchChange} />
 
+        {isLoading ? (
+          <Loading />
+        ) : (
+          searchResults.length > 0 &&
+          searchResults.slice(0, 3).map((user, index) => (
+            <View style={styles.requestCard} key={index}>
+              <View style={styles.header}>
+                <View style={styles.headerContnet}>
+                  <Text style={styles.title}>{user.username}</Text>
+                  <Text style={styles.subtitle}>{user.email}</Text>
+                </View>
+              </View>
+
+              <View style={styles.actionButtons}>
+                <TouchableOpacity
+                  onPress={() => handleAddFriend(user.id)}
+                  style={styles.actionButton}
+                >
+                  <Ionicons
+                    name="ios-person-add"
+                    size={24}
+                    color={COLORS.lightCharcol}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+          ))
+        )}
+
         <ListToggler
           selectionMode={1}
           firstOption={`Friends (${friends.length})`}
           secondOption={`Requests (${friendRequests.length})`}
           onSelectList={onSelectList}
         />
-        {requestStatus === "success" && (
-          <Text style={styles.successMessage}>
-            Friend request sent successfully!
-          </Text>
-        )}
-
-        {requestStatus === "failed" && (
-          <Text style={styles.errorMessage}>
-            Failed to send friend request. Please try again.
-          </Text>
-        )}
 
         <View style={styles.listWrapper}>
           {isLoading ? (
@@ -159,16 +187,6 @@ const FriendsScreen = ({ navigation }) => {
                     <Text style={styles.title}>{friend.username}</Text>
                     <Text style={styles.subtitle}>{friend.email}</Text>
                   </View>
-                </View>
-
-                <View style={styles.actionButtons}>
-                  <TouchableOpacity style={styles.actionButton}>
-                    <Ionicons
-                      name="ios-person-add"
-                      size={24}
-                      color={COLORS.lightCharcol}
-                    />
-                  </TouchableOpacity>
                 </View>
               </View>
             ))
@@ -266,20 +284,6 @@ const styles = StyleSheet.create({
 
   actionButton: {
     marginHorizontal: 8,
-  },
-
-  successMessage: {
-    color: COLORS.green,
-    fontSize: 16,
-    textAlign: "center",
-    marginVertical: 10,
-  },
-
-  errorMessage: {
-    color: COLORS.red,
-    fontSize: 16,
-    textAlign: "center",
-    marginVertical: 10,
   },
 });
 

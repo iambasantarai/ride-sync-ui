@@ -106,6 +106,11 @@ const FriendsScreen = ({ navigation }) => {
 
       if (response.status === 200) {
         getFriends();
+
+        setFriendRequests((prevRequests) =>
+          prevRequests.filter((request) => request.id !== requestId),
+        );
+
         showToastMessage(response.data.message);
       } else {
         showToastMessage("Failed to accept friend request.");

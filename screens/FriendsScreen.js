@@ -24,6 +24,7 @@ const FriendsScreen = ({ navigation }) => {
   const [searchResults, setSearchResults] = useState([]);
   const [listTab, setListTab] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
 
   const showToastMessage = (message) => {
     ToastAndroid.showWithGravityAndOffset(
@@ -69,9 +70,9 @@ const FriendsScreen = ({ navigation }) => {
 
     if (query.trim() !== "") {
       try {
-        setIsLoading(true);
+        setIsSearching(true);
         const response = await apiService.get(`/users?username=${query}`);
-        setIsLoading(false);
+        setIsSearching(false);
 
         setSearchResults(response.data.user);
       } catch (error) {
@@ -140,7 +141,7 @@ const FriendsScreen = ({ navigation }) => {
 
         <SearchField value={searchQuery} onChangeText={onSearchChange} />
 
-        {isLoading ? (
+        {isSearching ? (
           <Loading />
         ) : (
           searchResults.length > 0 &&

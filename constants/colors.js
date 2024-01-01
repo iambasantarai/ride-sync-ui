@@ -9,4 +9,5 @@ export const COLORS = {
   pastelYellow: "#D3C579",
   silverBlue: "#B8C8DA",
   paleGreen: "#CBDAB8",
+  red: "#E54545",
 };

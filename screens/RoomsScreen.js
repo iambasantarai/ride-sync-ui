@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   View,
   Text,
@@ -11,20 +11,65 @@ import { COLORS } from "../constants/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ProfileHeader } from "../components/ProfileHeader";
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from "@gorhom/bottom-sheet";
+import HeaderText from "../components/HeaderText";
+import InputField from "../components/InputField";
+import PrimaryButton from "../components/PrimaryButton";
 
 const RoomsScreen = ({ navigation }) => {
+  const bottomSheetModalRef = useRef(null);
+
+  const snapPoints = ["50%"];
+
+  const handlePresemtModal = () => {
+    bottomSheetModalRef.current?.present();
+  };
+
   return (
-    <SafeAreaProvider style={styles.container}>
-      <ScrollView style={{ padding: 20 }}>
-        <ProfileHeader navigation={navigation} />
-        <View style={styles.dashedContainer}>
-          <TouchableOpacity style={styles.createButton}>
-            <Text style={styles.buttonText}>Create new room</Text>
-            <Ionicons name="add-circle" size={48} color={COLORS.lightCharcol} />
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-    </SafeAreaProvider>
+    <BottomSheetModalProvider>
+      <SafeAreaProvider style={styles.container}>
+        <ScrollView style={{ padding: 20 }}>
+          <ProfileHeader navigation={navigation} />
+
+          <View style={styles.dashedContainer}>
+            <TouchableOpacity
+              style={styles.createButton}
+              onPress={handlePresemtModal}
+            >
+              <Text style={styles.buttonText}>Create new room</Text>
+              <Ionicons
+                name="add-circle"
+                size={48}
+                color={COLORS.lightCharcol}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <BottomSheetModal
+              ref={bottomSheetModalRef}
+              index={0}
+              snapPoints={snapPoints}
+              backgroundStyle={styles.modal}
+            >
+              <View style={styles.modalContent}>
+                <HeaderText title={"Create new room"} />
+                <InputField label={"Room Title"} />
+                <PrimaryButton
+                  label={"Create"}
+                  onPress={() => {
+                    alert("CLICKED.");
+                  }}
+                />
+              </View>
+            </BottomSheetModal>
+          </View>
+        </ScrollView>
+      </SafeAreaProvider>
+    </BottomSheetModalProvider>
   );
 };
 
@@ -57,6 +102,17 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
     color: COLORS.lightCharcol,
     fontSize: 24,
+  },
+
+  modal: {
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    backgroundColor: COLORS.charcol,
+    borderColor: COLORS.charcol,
+  },
+
+  modalContent: {
+    paddingHorizontal: 20,
   },
 });
 

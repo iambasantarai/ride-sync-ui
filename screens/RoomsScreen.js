@@ -15,9 +15,12 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from "@gorhom/bottom-sheet";
+
 import HeaderText from "../components/HeaderText";
 import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
+import { Requests } from "../components/Requests";
+// import { BlurView } from "expo-blur";
 
 const RoomsScreen = ({ navigation }) => {
   const bottomSheetModalRef = useRef(null);
@@ -46,6 +49,11 @@ const RoomsScreen = ({ navigation }) => {
                 color={COLORS.lightCharcol}
               />
             </TouchableOpacity>
+          </View>
+
+          <View style={styles.rooms}>
+            <Text style={styles.subHeader}>Rooms</Text>
+            <Requests />
           </View>
 
           <View>
@@ -79,25 +87,30 @@ const styles = StyleSheet.create({
     paddingTop: 24,
     backgroundColor: COLORS.darkGray,
   },
+
   text: {
     fontFamily: "Roboto",
     color: COLORS.white,
   },
+
   dashedContainer: {
     borderWidth: 2,
     borderRadius: 16,
-    paddingVertical: 8,
+    marginVertical: 16,
+    paddingVertical: 16,
     paddingHorizontal: 16,
     backgroundColor: COLORS.charcol,
     borderColor: COLORS.lightCharcol,
     borderStyle: "dashed",
   },
+
   createButton: {
     padding: 8,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
+
   buttonText: {
     fontFamily: "Roboto",
     color: COLORS.lightCharcol,
@@ -113,6 +126,16 @@ const styles = StyleSheet.create({
 
   modalContent: {
     paddingHorizontal: 20,
+  },
+
+  rooms: {
+    marginVertical: 20,
+  },
+
+  subHeader: {
+    fontSize: 20,
+    fontWeight: "700",
+    color: COLORS.lightGray,
   },
 });
 

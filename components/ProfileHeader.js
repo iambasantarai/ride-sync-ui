@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -9,21 +9,10 @@ import {
 
 import { COLORS } from "../constants/colors";
 const profile = require("../assets/whoknows.png");
-import { apiService } from "../services/apiService";
+import { AuthContext } from "../context/AuthContext";
 
 export const ProfileHeader = ({ navigation }) => {
-  const [user, setUser] = useState({});
-  useEffect(() => {
-    const getProfile = async () => {
-      try {
-        const response = await apiService.get("/users/profile");
-        setUser(response.data.user);
-      } catch (error) {
-        console.log("ERROR: ", error);
-      }
-    };
-    getProfile();
-  }, []);
+  const { user } = useContext(AuthContext);
 
   return (
     <View style={styles.header}>

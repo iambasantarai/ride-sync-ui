@@ -13,23 +13,38 @@ export const AuthProvider = ({ children }) => {
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  const [user, setUser] = useState({});
+
+  const getToken = async () => {
+    setIsLoading(true);
+    const token = await SecureStore.getItemAsync(AUTH_TOKEN);
+    setIsLoading(false);
+
+    if (token) {
+      apiService.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+      setAuthState({
+        token: token,
+        authenticated: true,
+      });
+    }
+  };
+
+  const getProfile = async () => {
+    try {
+      const response = await apiService.get("/users/profile");
+      setUser(response.data.user);
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+
   useEffect(() => {
-    const getToken = async () => {
-      setIsLoading(true);
-      const token = await SecureStore.getItemAsync(AUTH_TOKEN);
-      setIsLoading(false);
-
-      if (token) {
-        apiService.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-        setAuthState({
-          token: token,
-          authenticated: true,
-        });
-      }
-    };
-
     getToken();
+  }, []);
+
+  useEffect(() => {
+    getProfile();
   }, []);
 
   const register = async (username, email, password) => {
@@ -96,6 +111,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         isLoading,
+        user,
       }}
     >
       {children}

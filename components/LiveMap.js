@@ -1,14 +1,18 @@
 import React, { useContext } from "react";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import mapStyle from "../assets/mapStyle.json";
 import { COLORS } from "../constants/colors";
 import { UserLocationContext } from "../context/UserLocationContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AuthContext } from "../context/AuthContext";
 
 const LiveMap = () => {
   const { location, setLocation } = useContext(UserLocationContext);
+  const { user } = useContext(AuthContext);
+
+  const firstLetter = user.username.charAt(0).toUpperCase();
+
   return (
     location?.latitude && (
       <SafeAreaProvider style={styles.container}>
@@ -31,12 +35,7 @@ const LiveMap = () => {
               }}
             >
               <View style={styles.locationMarker}>
-                <MaterialCommunityIcons
-                  name="bike"
-                  style={{ padding: 4 }}
-                  size={20}
-                  color="white"
-                />
+                <Text style={styles.firstLetter}>{firstLetter}</Text>
               </View>
             </Marker>
           </MapView>
@@ -59,10 +58,20 @@ const styles = StyleSheet.create({
   },
 
   locationMarker: {
+    width: 25,
+    height: 25,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
     borderRadius: 50,
     borderColor: COLORS.green,
-    borderWidth: 4,
     backgroundColor: COLORS.darkGray,
+  },
+
+  firstLetter: {
+    color: COLORS.white,
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 

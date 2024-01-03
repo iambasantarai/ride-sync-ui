@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { StyleSheet, View, Text } from "react-native";
 import mapStyle from "../assets/mapStyle.json";
@@ -9,9 +9,13 @@ import { AuthContext } from "../context/AuthContext";
 
 const LiveMap = () => {
   const { location, setLocation } = useContext(UserLocationContext);
-  const { user } = useContext(AuthContext);
+  const { user, getProfile } = useContext(AuthContext);
 
-  const firstLetter = user.username.charAt(0).toUpperCase();
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const firstLetter = user?.username.charAt(0).toUpperCase();
 
   return (
     location?.latitude && (

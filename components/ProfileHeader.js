@@ -12,7 +12,11 @@ const profile = require("../assets/whoknows.png");
 import { AuthContext } from "../context/AuthContext";
 
 export const ProfileHeader = ({ navigation }) => {
-  const { user } = useContext(AuthContext);
+  const { user, getProfile } = useContext(AuthContext);
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <View style={styles.header}>

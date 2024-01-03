@@ -4,7 +4,11 @@ import { COLORS } from "../constants/colors";
 import { AuthContext } from "../context/AuthContext";
 
 const ProfileScreen = () => {
-  const { user } = useContext(AuthContext);
+  const { user, getProfile } = useContext(AuthContext);
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <View style={styles.container}>

@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [authState.token]);
 
   const register = async (username, email, password) => {
     try {
@@ -112,6 +112,7 @@ export const AuthProvider = ({ children }) => {
         logout,
         isLoading,
         user,
+        getProfile,
       }}
     >
       {children}

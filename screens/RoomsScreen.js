@@ -72,6 +72,9 @@ const RoomsScreen = ({ navigation }) => {
 
       if (response.status === 200) {
         showToastMessage(response.data.message);
+        setName(null);
+        bottomSheetModalRef.current?.dismiss();
+        getRooms();
       } else {
         showToastMessage("Failed to create room.");
       }

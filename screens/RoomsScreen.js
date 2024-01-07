@@ -25,16 +25,22 @@ import { Loading } from "../components/Loading";
 
 const RoomsScreen = ({ navigation }) => {
   const bottomSheetModalRef = useRef(null);
+  const sendInvitationModalRef = useRef(null);
 
-  const snapPoints = ["50%"];
+  const snapPoints = ["50%", "80%"];
+  const [name, setName] = useState(null);
+  const [rooms, setRooms] = useState([]);
+  const [friends, setFriends] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFriendsLoading, setIsFriendsLoading] = useState(false);
 
   const handlePresemtModal = () => {
     bottomSheetModalRef.current?.present();
   };
 
-  const [name, setName] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [rooms, setRooms] = useState([]);
+  const handleInviteModal = () => {
+    sendInvitationModalRef.current?.present();
+  };
 
   const showToastMessage = (message) => {
     ToastAndroid.showWithGravityAndOffset(
@@ -59,6 +65,21 @@ const RoomsScreen = ({ navigation }) => {
       console.log("ERROR: ", error);
     }
   };
+
+  const getFriends = async () => {
+    try {
+      setIsFriendsLoading(true);
+      const response = await apiService.get("/friends");
+      setIsFriendsLoading(false);
+      setFriends(response.data.friends);
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+
+  useEffect(() => {
+    getFriends();
+  }, []);
 
   useEffect(() => {
     getRooms();
@@ -128,7 +149,7 @@ const RoomsScreen = ({ navigation }) => {
               rooms.map((room, index) => (
                 <View style={styles.requestCard} key={index}>
                   <View style={styles.header}>
-                    <View style={styles.headerContnet}>
+                    <View style={styles.headerContent}>
                       <Text style={styles.title}>{room.name}</Text>
                       <Text style={styles.subtitle}>
                         {room.creator.username}
@@ -137,7 +158,10 @@ const RoomsScreen = ({ navigation }) => {
                   </View>
 
                   <View style={styles.actionButtons}>
-                    <TouchableOpacity style={styles.actionButton}>
+                    <TouchableOpacity
+                      style={styles.actionButton}
+                      onPress={handleInviteModal}
+                    >
                       <Feather name="send" size={20} color={COLORS.green} />
                     </TouchableOpacity>
 
@@ -171,6 +195,41 @@ const RoomsScreen = ({ navigation }) => {
                 />
 
                 <PrimaryButton label={"Create"} onPress={handleCreateRoom} />
+              </View>
+            </BottomSheetModal>
+          </View>
+
+          <View>
+            <BottomSheetModal
+              ref={sendInvitationModalRef}
+              index={1}
+              snapPoints={snapPoints}
+              backgroundStyle={styles.modal}
+            >
+              <View style={styles.friendListContainer}>
+                {isFriendsLoading ? (
+                  <Loading />
+                ) : (
+                  <ScrollView style={styles.friendsList}>
+                    {friends.map((friend, index) => (
+                      <View style={styles.requestCard} key={index}>
+                        <View style={styles.headerContent}>
+                          <View>
+                            <Text style={styles.title}>{friend.username}</Text>
+                            <Text style={styles.subtitle}>{friend.email}</Text>
+                          </View>
+                        </View>
+
+                        <TouchableOpacity
+                          style={styles.inviteButton}
+                          onPress={() => handleInviteFriend(friend.id)}
+                        >
+                          <Text style={styles.inviteButtonText}>Invite</Text>
+                        </TouchableOpacity>
+                      </View>
+                    ))}
+                  </ScrollView>
+                )}
               </View>
             </BottomSheetModal>
           </View>
@@ -256,7 +315,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  headerContnet: {
+  headerContent: {
     marginHorizontal: 20,
   },
 
@@ -281,6 +340,44 @@ const styles = StyleSheet.create({
 
   actionButton: {
     marginHorizontal: 8,
+  },
+
+  friendsListContainer: {
+    flex: 1,
+    marginTop: 10,
+  },
+
+  title: {
+    fontSize: 16,
+    color: COLORS.white,
+    fontWeight: "800",
+    fontFamily: "Roboto",
+  },
+
+  subtitle: {
+    fontSize: 12,
+    color: COLORS.lightCharcol,
+    fontWeight: "600",
+    fontFamily: "Roboto",
+  },
+
+  friendsList: {},
+
+  inviteButton: {
+    borderRadius: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: COLORS.green,
+  },
+
+  inviteButtonText: {
+    color: COLORS.white,
+    fontFamily: "Roboto",
+    fontSize: 14,
+    fontWeight: "bold",
   },
 });
 

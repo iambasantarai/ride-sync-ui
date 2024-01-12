@@ -21,8 +21,6 @@ import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
 import { apiService } from "../services/apiService";
 import { Loading } from "../components/Loading";
-// import { BlurView } from "expo-blur";
-
 const RoomsScreen = ({ navigation }) => {
   const bottomSheetModalRef = useRef(null);
   const sendInvitationModalRef = useRef(null);
@@ -103,6 +101,10 @@ const RoomsScreen = ({ navigation }) => {
       console.log("ERROR: ", error);
     }
   };
+  const handleChatRoom = ()=>{
+    console.log("cllicked")
+    navigation.navigate('ChatsScreen');
+  }
 
   const handleDeleteRoom = async (roomId) => {
     try {
@@ -115,6 +117,25 @@ const RoomsScreen = ({ navigation }) => {
         getRooms();
       } else {
         showToastMessage("Failed to delete room.");
+      }
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+  //invite
+   const handleInviteFriend = async (friendId) => {
+    try {
+      setIsLoading(true);
+      const response = await apiService.post(`/rooms/${selectedRoomId}/invite`, {
+        friendId,
+      });
+      setIsLoading(false);
+
+      if (response.status === 200) {
+        showToastMessage(response.data.message);
+        sendInvitationModalRef.current?.dismiss();
+      } else {
+        showToastMessage("Failed to send invitation.");
       }
     } catch (error) {
       console.log("ERROR: ", error);
@@ -171,6 +192,16 @@ const RoomsScreen = ({ navigation }) => {
                         size={20}
                         color={COLORS.red}
                         onPress={() => handleDeleteRoom(room.id)}
+                      />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.actionButton}
+                      onPress={() => navigation.navigate('Chats', { screen: 'ChatsScreen' })}
+                    >
+                      <MaterialIcons
+                        name="chat"
+                        size={20}
+                        color={COLORS.lightCharcol}
                       />
                     </TouchableOpacity>
                   </View>

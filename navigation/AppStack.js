@@ -21,6 +21,7 @@ const AppStack = () => {
       <Drawer.Screen component={TabNavigator} name="Home" />
       <Drawer.Screen component={ProfileScreen} name="Porfile" />
       <Drawer.Screen component={SettingsScreen} name="Settings" />
+     
     </Drawer.Navigator>
   );
 };

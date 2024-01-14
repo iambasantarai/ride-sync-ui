@@ -8,7 +8,7 @@ import {
   ToastAndroid,
 } from "react-native";
 import { COLORS } from "../constants/colors";
-import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ProfileHeader } from "../components/ProfileHeader";
 import {
@@ -23,12 +23,13 @@ import { apiService } from "../services/apiService";
 import { Loading } from "../components/Loading";
 const RoomsScreen = ({ navigation }) => {
   const bottomSheetModalRef = useRef(null);
-  const sendInvitationModalRef = useRef(null);
+  const addFriendToRoomModalRef = useRef(null);
 
   const snapPoints = ["50%", "80%"];
   const [name, setName] = useState(null);
   const [rooms, setRooms] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isFriendsLoading, setIsFriendsLoading] = useState(false);
 
@@ -37,7 +38,7 @@ const RoomsScreen = ({ navigation }) => {
   };
 
   const handleInviteModal = () => {
-    sendInvitationModalRef.current?.present();
+    addFriendToRoomModalRef.current?.present();
   };
 
   const showToastMessage = (message) => {
@@ -101,10 +102,6 @@ const RoomsScreen = ({ navigation }) => {
       console.log("ERROR: ", error);
     }
   };
-  const handleChatRoom = ()=>{
-    console.log("cllicked")
-    navigation.navigate('ChatsScreen');
-  }
 
   const handleDeleteRoom = async (roomId) => {
     try {
@@ -122,18 +119,18 @@ const RoomsScreen = ({ navigation }) => {
       console.log("ERROR: ", error);
     }
   };
-  //invite
-   const handleInviteFriend = async (friendId) => {
+
+  const handleAddFriendToRoom = async (friendId) => {
     try {
       setIsLoading(true);
-      const response = await apiService.post(`/rooms/${selectedRoomId}/invite`, {
-        friendId,
-      });
+      const response = await apiService.post(
+        `/rooms/${selectedRoomId}/add/${friendId}`,
+      );
       setIsLoading(false);
 
       if (response.status === 200) {
         showToastMessage(response.data.message);
-        sendInvitationModalRef.current?.dismiss();
+        addFriendToRoomModalRef.current?.dismiss();
       } else {
         showToastMessage("Failed to send invitation.");
       }
@@ -181,9 +178,16 @@ const RoomsScreen = ({ navigation }) => {
                   <View style={styles.actionButtons}>
                     <TouchableOpacity
                       style={styles.actionButton}
-                      onPress={handleInviteModal}
+                      onPress={() => {
+                        handleInviteModal();
+                        setSelectedRoomId(room.id);
+                      }}
                     >
-                      <Feather name="send" size={20} color={COLORS.green} />
+                      <FontAwesome5
+                        name="user-plus"
+                        size={20}
+                        color={COLORS.lightCharcol}
+                      />
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.actionButton}>
@@ -196,7 +200,9 @@ const RoomsScreen = ({ navigation }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={styles.actionButton}
-                      onPress={() => navigation.navigate('Chats', { screen: 'ChatsScreen' })}
+                      onPress={() =>
+                        navigation.navigate("Chats", { screen: "ChatsScreen" })
+                      }
                     >
                       <MaterialIcons
                         name="chat"
@@ -232,12 +238,12 @@ const RoomsScreen = ({ navigation }) => {
 
           <View>
             <BottomSheetModal
-              ref={sendInvitationModalRef}
+              ref={addFriendToRoomModalRef}
               index={1}
               snapPoints={snapPoints}
               backgroundStyle={styles.modal}
             >
-              <View style={styles.friendListContainer}>
+              <View style={styles.friendsListContainer}>
                 {isFriendsLoading ? (
                   <Loading />
                 ) : (
@@ -252,10 +258,10 @@ const RoomsScreen = ({ navigation }) => {
                         </View>
 
                         <TouchableOpacity
-                          style={styles.inviteButton}
-                          onPress={() => handleInviteFriend(friend.id)}
+                          style={styles.addButton}
+                          onPress={() => handleAddFriendToRoom(friend.id)}
                         >
-                          <Text style={styles.inviteButtonText}>Invite</Text>
+                          <Text style={styles.addButtonText}>Add to room</Text>
                         </TouchableOpacity>
                       </View>
                     ))}
@@ -280,6 +286,11 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "Roboto",
     color: COLORS.white,
+  },
+
+  friendsListContainer: {
+    flex: 1,
+    marginTop: 10,
   },
 
   dashedContainer: {
@@ -392,9 +403,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto",
   },
 
-  friendsList: {},
-
-  inviteButton: {
+  addButton: {
     borderRadius: 16,
     paddingVertical: 8,
     paddingHorizontal: 16,
@@ -404,7 +413,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.green,
   },
 
-  inviteButtonText: {
+  addButtonText: {
     color: COLORS.white,
     fontFamily: "Roboto",
     fontSize: 14,

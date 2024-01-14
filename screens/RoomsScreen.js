@@ -168,10 +168,18 @@ const RoomsScreen = ({ navigation }) => {
                 <View style={styles.requestCard} key={index}>
                   <View style={styles.header}>
                     <View style={styles.headerContent}>
-                      <Text style={styles.title}>{room.name}</Text>
-                      <Text style={styles.subtitle}>
-                        {room.creator.username}
-                      </Text>
+                      <TouchableOpacity
+                        onPress={() =>
+                          navigation.navigate("RoomDetails", {
+                            room,
+                          })
+                        }
+                      >
+                        <Text style={styles.title}>{room.name}</Text>
+                        <Text style={styles.subtitle}>
+                          {room.creator.username}
+                        </Text>
+                      </TouchableOpacity>
                     </View>
                   </View>
 

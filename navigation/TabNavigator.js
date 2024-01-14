@@ -1,5 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "../screens/HomeScreen";
 import RoomsScreen from "../screens/RoomsScreen";
@@ -9,8 +10,33 @@ import { FontAwesome5, MaterialIcons, Ionicons } from "@expo/vector-icons";
 
 import { COLORS } from "../constants/colors";
 import ChatsScreen from "../screens/ChatsScreen";
+import RoomDetailsScreen from "../screens/RoomDetailsScreen";
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+
+const HomeStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        component={HomeScreen}
+        name="Home"
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        component={RoomDetailsScreen}
+        name="RoomDetails"
+        options={({ route }) => ({
+          title: route.params?.room.name,
+          headerStyle: {
+            backgroundColor: COLORS.darkGray,
+          },
+          headerTintColor: COLORS.white,
+        })}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const TabNavigator = () => {
   return (
@@ -27,8 +53,8 @@ const TabNavigator = () => {
       }}
     >
       <Tab.Screen
-        name="HomeTab"
-        component={HomeScreen}
+        name="Home2"
+        component={HomeStack}
         options={{
           tabBarIcon: ({ color, size }) => (
             <FontAwesome5 name="home" color={color} size={size} />
